@@ -1,0 +1,24 @@
+{
+  "name": "newsletter-backend",
+  "version": "1.0.0",
+  "description": "School Assignment @Medieinstitutet - Monolithic app for Admin. Built with NodeJS, Express and MongoDB. Also built a frontend app, check my repositories: (newsletter-frontend)",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathaliejanep/newsletter-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathaliejanep/newsletter-backend/issues"
+  },
+  "homepage": "https://github.com/nathaliejanep/newsletter-backend#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}

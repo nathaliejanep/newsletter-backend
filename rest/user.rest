@@ -1,0 +1,25 @@
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "username":"janedoe12345",
+    "password":"password123",
+    "email":"jane@mail.com",
+    "newsletter":true
+}
+
+###
+
+PUT http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "_id":"628b89a4fba196c1ff3bb9b2",
+    "newsletter":false
+}
+
+###
+
+DELETE  http://localhost:3000/api/users/628b89a4fba196c1ff3bb9b2
+
+###
