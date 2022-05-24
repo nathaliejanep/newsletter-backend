@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const UserModel = require('../models/user-model');
+const fs = require('fs');
+const cors = require('cors');
+
+router.use(cors());
 
 router.get('/', async (req, res) => {
   const users = await UserModel.find();
   res.status(200).json(users);
 });
 
-router.post('/', async (req, res) => {
+router.post('/signup', async (req, res) => {
   const user = await UserModel.create(req.body);
   res.status(201).json(user);
 });
