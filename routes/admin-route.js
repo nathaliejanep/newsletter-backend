@@ -42,6 +42,7 @@ router.get('/users', authUser, async (req, res) => {
     printUsers += `
     <ul>
       <li>Email: ${user.username} </li>
+      <li>ID: ${user._id} </li>
       <li>Subscribes: ${user.newsletter ? 'Yes' : 'No'}</li>
     </ul>
     `;

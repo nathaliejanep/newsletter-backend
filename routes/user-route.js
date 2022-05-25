@@ -16,7 +16,7 @@ router.post('/signup', async (req, res) => {
   res.status(201).json(user);
 });
 
-router.put('/', async (req, res) => {
+router.put('/change', async (req, res) => {
   const { _id, newsletter } = req.body;
   const user = await UserModel.findById({ _id });
 
@@ -25,9 +25,14 @@ router.put('/', async (req, res) => {
   res.status(200).json(user);
 });
 
-router.delete('/:id', async (req, res) => {
-  await UserModel.findByIdAndDelete({ _id: req.params.id });
-  res.status(200).json('Product successfully deleted');
+router.get('/:id', async (req, res) => {
+  const user = await UserModel.findById({ _id: req.params.id });
+  res.status(200).json(user);
 });
+
+// router.delete('/:id', async (req, res) => {
+//   await UserModel.findByIdAndDelete({ _id: req.params.id });
+//   res.status(200).json('Product successfully deleted');
+// });
 
 module.exports = router;
