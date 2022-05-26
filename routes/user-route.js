@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const UserModel = require('../models/user-model');
+const CryptoJS = require('crypto-js');
 const cors = require('cors');
+const userModel = require('../models/user-model');
 
 router.use(cors());
 
@@ -10,7 +12,57 @@ router.get('/', async (req, res) => {
   res.status(200).json(users);
 });
 
+const decryptPass = (encPass) => {
+  let decPass = CryptoJS.AES.decrypt(encPass, 'Salt Key').toString(
+    CryptoJS.enc.Utf8
+  );
+  return decPass;
+};
+
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const user = await UserModel.findOne({ username });
+  try {
+    if (!user) {
+      res.status(400).json({ status: 'error' });
+      // throw new Error('Invalid Username');
+    } else {
+      let userPass = decryptPass(user.password);
+      if (user && userPass == password) {
+        res.json({
+          status: 'ok',
+          _id: user._id,
+          username: user.username,
+          newsletter: user.newsletter,
+        });
+      } else {
+        res.status(400).json({ status: 'error' });
+        // throw new Error('Invalid Password');
+
+        // if (decryptPass == loginUser.password) {
+        //   res.json({ status: 'ok', id: users._id, newsletter: users.newsletter });
+        // } else {
+        //   res.json({ status: 'Error' });
+        // }
+      }
+    }
+  } catch (err) {
+    res.json(err);
+  }
+});
+const encryptPass = (userPass) => {
+  let encPass = CryptoJS.AES.encrypt(userPass, 'Salt Key').toString();
+  return encPass;
+};
+
 router.post('/signup', async (req, res) => {
+  let safePass = encryptPass(req.body.password);
+  req.body.password = safePass;
+
+  // req.body.password = CryptoJS.AES.encrypt(
+  //   req.body.password,
+  //   'Salt Key'
+  // ).toString();
   const user = await UserModel.create(req.body);
   res.status(201).json(user);
 });
@@ -24,6 +76,7 @@ router.put('/change', async (req, res) => {
   res.status(200).json(user);
 });
 
+// ta bort?
 router.get('/:id', async (req, res) => {
   const user = await UserModel.findById({ _id: req.params.id });
   res.status(200).json(user);
