@@ -12,6 +12,7 @@ const UserSchema = mongoose.Schema({
   },
   newsletter: {
     type: Boolean,
+    required: true,
   },
 });
 

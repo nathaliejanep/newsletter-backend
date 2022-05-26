@@ -20,9 +20,10 @@ router.post('/login', (req, res) => {
 
     if (foundAdmin) {
       return res.redirect('/admin/users');
+    } else {
+      let wrongHtml = 'Wrong credentials... <a href="/">Try Again</a>';
+      res.send(wrongHtml);
     }
-
-    res.send('fel');
   });
 });
 
