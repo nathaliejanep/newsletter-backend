@@ -38,12 +38,6 @@ router.post('/login', async (req, res) => {
       } else {
         res.status(400).json({ status: 'error' });
         // throw new Error('Invalid Password');
-
-        // if (decryptPass == loginUser.password) {
-        //   res.json({ status: 'ok', id: users._id, newsletter: users.newsletter });
-        // } else {
-        //   res.json({ status: 'Error' });
-        // }
       }
     }
   } catch (err) {
@@ -56,15 +50,17 @@ const encryptPass = (userPass) => {
 };
 
 router.post('/signup', async (req, res) => {
+  const { username } = req.body;
+  const userConflict = await UserModel.findOne({ username });
+
   let safePass = encryptPass(req.body.password);
   req.body.password = safePass;
-
-  // req.body.password = CryptoJS.AES.encrypt(
-  //   req.body.password,
-  //   'Salt Key'
-  // ).toString();
-  const user = await UserModel.create(req.body);
-  res.status(201).json(user);
+  if (userConflict) {
+    res.status(409).json({ status: 'error' });
+  } else {
+    const user = await UserModel.create(req.body);
+    res.status(201).json(user);
+  }
 });
 
 router.put('/change', async (req, res) => {
