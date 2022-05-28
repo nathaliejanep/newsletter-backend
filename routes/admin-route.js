@@ -1,28 +1,39 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const { authUser } = require('../auth');
+const { authUser } = require('../controllers/auth');
 const UserModel = require('../models/user-model');
 
 router.post('/login', (req, res) => {
   res.cookie('session_id', '123456');
 
   fs.readFile('admin.json', (err, data) => {
-    const admins = JSON.parse(data);
+    try {
+      if (err) {
+        console.log(`Something went wrong ${err}`);
+        if (err.code == 'ENONENT') {
+          console.log('File does not exist');
+        }
+        res.send('Something went wrong');
+      }
+      const admins = JSON.parse(data);
 
-    let foundAdmin = admins.find((admin) => {
-      console.log(req.body.username);
-      return (
-        admin.username == req.body.username &&
-        admin.password == req.body.password
-      );
-    });
+      let foundAdmin = admins.find((admin) => {
+        console.log(req.body.username);
+        return (
+          admin.username == req.body.username &&
+          admin.password == req.body.password
+        );
+      });
 
-    if (foundAdmin) {
-      return res.redirect('/admin/users');
-    } else {
-      let wrongHtml = 'Wrong credentials... <a href="/">Try Again</a>';
-      res.send(wrongHtml);
+      if (foundAdmin) {
+        return res.redirect('/admin/users');
+      } else {
+        let wrongHtml = 'Wrong credentials... <a href="/">Try Again</a>';
+        res.send(wrongHtml);
+      }
+    } catch (err) {
+      res.status(404);
     }
   });
 });

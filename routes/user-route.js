@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const UserModel = require('../models/user-model');
-const CryptoJS = require('crypto-js');
+// const CryptoJS = require('crypto-js');
 const cors = require('cors');
 const userModel = require('../models/user-model');
+const { encryptPass, decryptPass } = require('../controllers/password');
 
 router.use(cors());
 
@@ -12,12 +13,12 @@ router.get('/', async (req, res) => {
   res.status(200).json(users);
 });
 
-const decryptPass = (encPass) => {
-  let decPass = CryptoJS.AES.decrypt(encPass, 'Salt Key').toString(
-    CryptoJS.enc.Utf8
-  );
-  return decPass;
-};
+// const decryptPass = (encPass) => {
+//   let decPass = CryptoJS.AES.decrypt(encPass, 'Salt Key').toString(
+//     CryptoJS.enc.Utf8
+//   );
+//   return decPass;
+// };
 
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -25,7 +26,6 @@ router.post('/login', async (req, res) => {
   try {
     if (!user) {
       res.status(400).json({ status: 'error' });
-      // throw new Error('Invalid Username');
     } else {
       let userPass = decryptPass(user.password);
       if (user && userPass == password) {
@@ -37,17 +37,16 @@ router.post('/login', async (req, res) => {
         });
       } else {
         res.status(400).json({ status: 'error' });
-        // throw new Error('Invalid Password');
       }
     }
   } catch (err) {
     res.json(err);
   }
 });
-const encryptPass = (userPass) => {
-  let encPass = CryptoJS.AES.encrypt(userPass, 'Salt Key').toString();
-  return encPass;
-};
+// const encryptPass = (userPass) => {
+//   let encPass = CryptoJS.AES.encrypt(userPass, 'Salt Key').toString();
+//   return encPass;
+// };
 
 router.post('/signup', async (req, res) => {
   const { username } = req.body;

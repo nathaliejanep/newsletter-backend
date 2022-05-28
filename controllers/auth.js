@@ -7,10 +7,6 @@ function authUser(req, res, next) {
   } else {
     res.status(403).send({ msg: 'Not Authenticated' });
   }
-  // if (req.user == null) {
-  //   res.status(403);
-  //   return res.send('You need to sign in');
-  // }
 }
 
 module.exports = {
