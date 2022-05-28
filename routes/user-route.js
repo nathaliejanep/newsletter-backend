@@ -43,10 +43,6 @@ router.post('/login', async (req, res) => {
     res.json(err);
   }
 });
-// const encryptPass = (userPass) => {
-//   let encPass = CryptoJS.AES.encrypt(userPass, 'Salt Key').toString();
-//   return encPass;
-// };
 
 router.post('/signup', async (req, res) => {
   const { username } = req.body;
