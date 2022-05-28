@@ -8,10 +8,10 @@ const { encryptPass, decryptPass } = require('../controllers/password');
 
 router.use(cors());
 
-router.get('/', async (req, res) => {
-  const users = await UserModel.find();
-  res.status(200).json(users);
-});
+// router.get('/', async (req, res) => {
+//   const users = await UserModel.find();
+//   res.status(200).json(users);
+// });
 
 // const decryptPass = (encPass) => {
 //   let decPass = CryptoJS.AES.decrypt(encPass, 'Salt Key').toString(
