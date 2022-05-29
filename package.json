@@ -4,7 +4,6 @@
   "description": "School Assignment @Medieinstitutet - Monolithic app for Admin. Built with NodeJS, Express and MongoDB. Also built a frontend app, check my repositories: (newsletter-frontend)",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
