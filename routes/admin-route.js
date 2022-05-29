@@ -4,6 +4,7 @@ const fs = require('fs');
 const { authUser } = require('../controllers/auth');
 const UserModel = require('../models/user-model');
 
+// Add cookie for auth in /user
 router.post('/login', (req, res) => {
   res.cookie('session_id', '123456');
 
@@ -38,41 +39,33 @@ router.post('/login', (req, res) => {
   });
 });
 
+// Clears cookie to remove authorization when logged out
 router.get('/logout', (req, res) => {
   res.clearCookie('session_id');
   res.redirect('/');
 });
 
+// If authorized print Users Info
 router.get('/users', authUser, async (req, res) => {
   let users = await UserModel.find();
 
-  let printSubscribers =
-    '<a href="/admin/logout">Log out</a><h2>Subscribers</h2>';
+  let printUsers = '<a href="/admin/logout">Log out</a><h2>Users</h2><ul>';
+  for (const user of users) {
+    printUsers += `<li> ${user.username} </li>`;
+  }
 
-  let printUsers = '<h2>All Users</h2>';
-  users.forEach((user) => {
-    printUsers += `
-    <ul>
-      <li>Email: ${user.username} </li>
-      <li>ID: ${user._id} </li>
-      <li>Subscribes: ${user.newsletter ? 'Yes' : 'No'}</li>
-    </ul>
-    `;
-
+  printUsers += '</ul>';
+  printUsers += '<h2>Subscribers:</h2><ul>';
+  for (const user of users) {
     if (user.newsletter === true) {
-      printSubscribers += `
-        <ul>
-          <li>${user.username} </li>
-          <li>${user.newsletter}</li>
-        </ul>
-        `;
+      printUsers += `
+      <li> ${user.username} </li>
+    `;
     }
-  });
+    printUsers += '</ul>';
+  }
 
-  let printLists = printSubscribers;
-  printLists += printUsers;
-
-  res.status(200).send(printLists);
+  res.status(200).send(printUsers);
 });
 
 module.exports = router;

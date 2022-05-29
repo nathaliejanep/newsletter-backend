@@ -1,25 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const UserModel = require('../models/user-model');
-// const CryptoJS = require('crypto-js');
 const cors = require('cors');
 const userModel = require('../models/user-model');
 const { encryptPass, decryptPass } = require('../controllers/password');
 
 router.use(cors());
 
-// router.get('/', async (req, res) => {
-//   const users = await UserModel.find();
-//   res.status(200).json(users);
-// });
-
-// const decryptPass = (encPass) => {
-//   let decPass = CryptoJS.AES.decrypt(encPass, 'Salt Key').toString(
-//     CryptoJS.enc.Utf8
-//   );
-//   return decPass;
-// };
-
+// Find user - sends status ok if user exist and password match and error if not
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const user = await UserModel.findOne({ username });
@@ -44,6 +32,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Look if username exists - sends status error otherwise ok
 router.post('/signup', async (req, res) => {
   const { username } = req.body;
   const userConflict = await UserModel.findOne({ username });
@@ -58,6 +47,7 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+// Find user by id and send newsletter boolean
 router.put('/change', async (req, res) => {
   const { _id, newsletter } = req.body;
   const user = await UserModel.findById({ _id });
@@ -67,15 +57,10 @@ router.put('/change', async (req, res) => {
   res.status(200).json(user);
 });
 
-// ta bort?
+// Get info about user :id is found in frontend by localstorage
 router.get('/:id', async (req, res) => {
   const user = await UserModel.findById({ _id: req.params.id });
   res.status(200).json(user);
 });
-
-// router.delete('/:id', async (req, res) => {
-//   await UserModel.findByIdAndDelete({ _id: req.params.id });
-//   res.status(200).json('Product successfully deleted');
-// });
 
 module.exports = router;
