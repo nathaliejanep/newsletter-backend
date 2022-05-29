@@ -1,7 +1,7 @@
 # newsletter-backend
 Monolithic app for Admin to check which users are subscribing to our newsletter.<br>
 Built with NodeJS, Express and MongoDB Atlas.<br>
-Frontend app built with React, link to respository: ([newsletter-frontend](https://github.com/nathaliejanep/newsletter-frontend))
+Frontend app built with React, link to respository: [newsletter-frontend](https://github.com/nathaliejanep/newsletter-frontend)
 
 ## Packages used
 cors <br>
